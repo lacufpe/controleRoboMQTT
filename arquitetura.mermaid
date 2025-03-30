@@ -1,0 +1,35 @@
+flowchart TD
+    subgraph Computador[Computador]
+        style Computador fill:#FFF4B0,stroke:#333,stroke-width:2px;
+        subgraph Broker_MQTT
+            MQTTBroker[MQTT Broker<br/>Mosquitto]
+        end
+
+        subgraph Interfaces_Controle[Interfaces de Controle]
+            WebApp[WebApp]
+            CLI[CLI]
+            JoyStick[Joystick]
+        end
+
+        subgraph Robo_Virtual["Robô Virtual"]
+            style Robo_Virtual fill:#E6F9FF,stroke:#3498db,stroke-width:2px;
+            PythonProxy[Proxy/<br/>Middleware]
+            CoppeliaSim[CoppeliaSim]
+        end
+
+        Interfaces_Controle --> MQTTBroker
+        MQTTBroker <--> PythonProxy
+        PythonProxy --> CoppeliaSim
+    end
+
+    subgraph Robo_Fisico[Robô Físico]
+        style Robo_Fisico fill:#E6F9FF,stroke:#333,stroke-width:2px;
+        ESP32[ESP32]
+        Motors[Motores]
+        Sensors[Sensores]
+    
+        ESP32 --> Motors
+        ESP32 --> Sensors
+    end
+
+    MQTTBroker <--> ESP32
